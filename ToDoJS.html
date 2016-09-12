@@ -26,6 +26,19 @@
 
 			var todoApp = angular.module("todoApp",[]);
 
+
+			todoApp.filter("checkedItems", function() {
+				return function (items, showComplete){
+					var resultArr = [];
+					angular.forEach(items, function(item) {
+						if (item.done == false || showComplete == true){
+							resultArr.push(item);
+						}
+					});
+					return resultArr;
+				}
+			});
+
 			todoApp.controller("ToDoCtrl",function ($scope){
 				$scope.todo = model;
 
@@ -38,6 +51,14 @@
 					});
 					return count;
 				}
+
+				$scope.warningLevel = function(){
+					return $scope.incompleteCount() < 3 ? "label-success" : "label-warning"
+				}
+
+				$scope.AddNewItem = function(actionText) {
+					$scope.todo.items.push({action: actionText, done: false});
+				}
 			});
 		</script>
 	</head>
@@ -45,17 +66,29 @@
 		<div class="page-header">
 			<h1>{{todo.user}}'s To Do List</h1>
 			<!--span class="label label-default">{{todo.items.length}}</span> -->
-			<span class="label label-default" ng-hide="incompleteCount() == 0">
+			<!--span class="label label-default" ng-hide="incompleteCount() == 0">
+				{{incompleteCount()}} 
+			</span-->
+			<span class="label label-default" ng-class="warningLevel()" ng-hide="incompleteCount() == 0"> <!-- Codigo que actualiza el warning -->
 				{{incompleteCount()}} 
 			</span>
+
 		</div>
 		<div class="panel"> 
 
 			<div class="input-group">
+				<!--
 				<input class="form-control"/>
 				<span class="input-group-btn"> 
 					<button class="btn btn-default">Add</button>
 				</span>
+				-->
+				<input class="form-control" ng-model="actionText"/> <!-- Agrega información a la lista -->
+				<span class="input-group-btn"> 
+					<button class="btn btn-default"
+						ng-click="AddNewItem(actionText)">Add</button>
+				</span>
+
 			</div>
 			<table class="table table-striped">
 				<thead>
@@ -65,13 +98,19 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr ng-repeat="item in todo.items">
+					<tr ng-repeat="item in todo.items | checkedItems:showComplete | orderBy:'action'"><!-- -->
+					<!--tr ng-repeat="item in todo.items | filter:{done: false} | orderBy: 'action'"> <!-- 1.1 Filtra la informacion por el valor de false -->
+					<!--tr ng-repeat="item in todo.items" --> <!-- 1.0 con esta opcion iniciamos -->
 						<td>{{item.action}}</td>
 						<td><input type="checkbox" ng-model="item.done"/></td>
 						<td>{{item.done}}</td>
 					</tr>
 				</tbody>				
 			</table>
+
+			<div class="checkbox-inline">
+				<label><input type="checkbox" ng-model="showComplete">Show Complete</label>
+			</div>
 		</div>
 	</body>
 </html>
