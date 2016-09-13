@@ -214,3 +214,138 @@ parseInt(str) 		Parses the specified string to create an integer value
 parseFloat(str) 	Parses the specified string to create an integer or real value
 
 
+//--------------------- Arreglos  ---------------------------//
+
+var myArray = new Array();
+
+myArray[0] = 100;
+myArray[1] = "Adam";
+myArray[2] = true;
+
+var myArray = [100, "Adam", true];
+
+//------------------- Detectar Arreglos ---------------------//
+
+angular.isArray([100,"Adam",true]);
+angular.isArray("Adam");
+angular.isArray(23);
+
+//------------ Agregar y modificar contenido ---------------//
+
+console.log(myArray[0]);
+
+myArray[0] = "Tuesday"
+
+//--------- Enuerar contenido de arreglo -------------------//
+
+
+for (var i = 0; i < myArray.length; i++) {
+	console.log("Index " + i + ": " + myArray[i]);
+}
+console.log("---");
+
+angular.forEach(myArray, function (value, key) {
+	console.log(key + ": " + value);
+});
+
+Index 0: 100
+Index 1: Adam
+Index 2: true
+---
+0: 100
+1: Adam
+2: true
+
+Method Description Returns
+concat(otherArray) Concatenates the contents of the array with the array specified by the                    Array
+argument. Multiple arrays can be specified.
+
+join(separator) Joins all of the elements in the array to form a string. The argument specifies				 Array
+the character used to delimit the items.
+
+pop() Treats an array like a stack and removes and returns the last item in the array.  					 Array
+
+push(item) Treats an array like a stack and appends the specified item to the array.                         void
+
+reverse() Reverses the order of the items in the array.                                                      Array
+
+shift() Like pop, but operates on the first element in the array. 											 object
+
+slice(start,end) Returns a section of the array.                                                             Array
+
+sort() Sorts the items in the array. 																		 Array
+
+splice(index, count) Removes count items from the array, starting at the specified index. 					 Array
+
+unshift(item) Like push, but inserts the new element at the start of the array.                              void
+
+
+
+//----------------- Comparación indefinida y valores nulos ---------------------------//
+
+
+console.log("Prop " + myData.doesnexist)
+Prop : undefined
+
+var myData = {
+	name: "Adam",
+};
+
+console.log("Var: " + myData.weather);
+console.log("Prop: " + ("weather" in myData));
+
+Var: undefined
+Prop: false
+
+myData.weather = "sunny";
+console.log("Var: " + myData.weather);
+console.log("Prop: " + ("weather" in myData));
+
+Var: sunny
+Prop: true
+
+myData.weather = null;
+console.log("Var: " + myData.weather);
+console.log("Prop: " + ("weather" in myData));
+
+Var: null
+Prop: true
+
+//---------------- Validado nulos o indefinidos ---------------------------//
+
+
+var myData = {
+	name: "Adam",
+	city: null
+};
+
+if (!myData.name) {
+	console.log("name IS null or undefined");
+} else {
+	console.log("name is NOT null or undefined");
+}
+
+if (!myData.city) {
+	console.log("city IS null or undefined");
+} else {
+	console.log("city is NOT null or undefined");
+}
+
+name is NOT null or undefined
+city IS null or undefined
+
+
+
+
+var myData = {
+	name: "Adam",
+	city: null
+};
+
+console.log("name: " + angular.isDefined(myData.name));
+console.log("city: " + angular.isDefined(myData.city));
+console.log("country: " + angular.isDefined(myData.country));
+
+name: true
+city: true
+country: false
